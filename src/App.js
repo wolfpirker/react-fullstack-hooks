@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import Post from './post';
+
 
 const App = ({ initialCount }) => {
   const [state, setState] = useState({
@@ -25,7 +27,7 @@ const App = ({ initialCount }) => {
 
   const addOnePost = () => {
     let newPost = {
-      name: 'PHP is still decent',
+      name: 'PHP is still awesome',
       body: 'something about php'
     }
 
@@ -35,6 +37,24 @@ const App = ({ initialCount }) => {
     ]);
 
   }
+
+  const removePosts = () => {
+    setPosts([])
+  }
+
+  useEffect(() => {
+    // console.log('change on state')
+  }, [state])
+
+
+  useEffect(() => {
+    // console.log('change on posts')
+  }, [posts])
+
+  useEffect(() => {
+    //console.log('MOUNTED')
+  }, [])
+
 
 
   return (
@@ -46,16 +66,14 @@ const App = ({ initialCount }) => {
         count: state.count + 1
       })}> Add one +1 </button>
       <button onClick={restOne}> Rest one -1 </button>
-      {/* <button onClick={ ()=> setCount(initialCount) }> RESET </button> */}
+      <button onClick={removePosts}> Remove posts </button>
+
+
 
       <hr />
 
       {posts.map((item, i) => (
-        <div key={i}>
-          <div>Name: {item.name} </div>
-          <div>Body: {item.body} </div>
-          <hr />
-        </div>
+        <Post item={item} key={i} />
       ))}
 
       <button

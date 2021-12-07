@@ -1653,15 +1653,233 @@ course</li>
 <ul>
 <li>basic purpose: use a value and set/update a value with a
 function</li>
-<li>it is possible to have a hash / dictionary as state as
-well</li>
-<li><br /></li>
+<li>it is possible to have a hash / dictionary as state as well;
+but there is a issue with it</li>
+<ul>
+<li>since useState is replacing the full state</li>
+<li>example:</li>
+<ul>
+<li>we just set a specific state like this:<br />
+<div style=
+"color: rgb(212, 212, 212); background-color: rgb(30, 30, 30); font-family: 'Droid Sans Mono', monospace, monospace, 'Droid Sans Fallback'; font-size: 14px; line-height: 19px; white-space: pre;">
+<div><span style="color: #569cd6;">const</span> [<span style=
+"color: #4fc1ff;">state</span>, <span style=
+"color: #dcdcaa;">setState</span>] = <span style=
+"color: #dcdcaa;">useState</span>({</div>
+<div><span style="color: #9cdcfe;">count</span><span style=
+"color: #9cdcfe;">:</span> <span style=
+"color: #9cdcfe;">initialCount</span>,</div>
+<div><span style="color: #9cdcfe;">user</span><span style=
+"color: #9cdcfe;">:</span> <span style=
+"color: #ce9178;">"Francis"</span></div>
+<div>});</div>
+<div><br /></div>
+<div>[...]</div>
+<div><br /></div>
+<div>
+<div style=
+"font-family: 'Droid Sans Mono', monospace, monospace, 'Droid Sans Fallback'; line-height: 19px;">
+<en-media type="image/png" hash="ff8621e99e4332f46bb7a2d480d18fbe"></en-media><br />
+</div>
+</div>
+</div>
+</li>
+<li>problem: this overwrite the whole state, the user is
+removed!</li>
+</ul>
+<li>a workaround:</li>
+<ul>
+<li>find also below docs: 7. Hooks API Reference -&gt;
+useState<br />
+&gt;&nbsp;<a href=
+"https://reactjs.org/docs/hooks-reference.html#usestate" title=
+"https://reactjs.org/docs/hooks-reference.html#usestate">https://reactjs.org/docs/hooks-reference.html#usestate</a></li>
+<li>
+<p>Note</p>
+<p>Unlike the <code>setState</code> method found in class
+components, <code>useState</code> does not automatically merge
+update objects. You can replicate this behavior by combining the
+function updater form with object spread syntax:<br />
+<en-media type="image/png" hash="26512ba85ca7d866c77114c90c9931df"></en-media><br />
+</p>
+</li>
+<li>so basically you use ES6 magic to make a merge of a new object
+that contains the previous data and the updated data - concetenat
+data</li>
+<li>pass an object that contains the previous state; including the
+count and the user</li>
+<li>in our example we could set up the button with setState like
+that:<br />
+<div style=
+"color: rgb(212, 212, 212); background-color: rgb(30, 30, 30); font-family: 'Droid Sans Mono', monospace, monospace, 'Droid Sans Fallback'; font-size: 14px; line-height: 19px; white-space: pre;">
+<div><span style="color: #808080;">&lt;</span><span style=
+"color: #569cd6;">button</span> <span style=
+"color: #9cdcfe;">onClick</span>=<span style=
+"color: #569cd6;">{</span>() <span style=
+"color: #569cd6;">=&gt;</span> <span style=
+"color: #dcdcaa;">setState</span>({</div>
+<div>...<span style="color: #4fc1ff;">state</span>,</div>
+<div><span style="color: #9cdcfe;">count</span><span style=
+"color: #9cdcfe;">:</span> <span style=
+"color: #4fc1ff;">state</span>.<span style=
+"color: #9cdcfe;">count</span> + <span style=
+"color: #b5cea8;">1</span></div>
+<div>})<span style="color: #569cd6;">}</span><span style=
+"color: #808080;">&gt;</span> Add one +1 <span style=
+"color: #808080;">&lt;/</span><span style=
+"color: #569cd6;">button</span><span style=
+"color: #808080;">&gt;</span></div>
+</div>
+</li>
+<li>the better option is to use <span style=
+"background-color: rgb(255, 255, 0);">useReducer</span>
+<span style="background-color: rgb(255, 255, 255);">we are going to
+use it later; first we should learn about Redux later in the
+course; useReduxer is a similar way of using Redux - quite the same
+concept</span></li>
+</ul>
+</ul>
+<li>another point&nbsp;</li>
+<ul>
+<li>lets say we have an array of posts</li>
+<li>quite common on React</li>
+<li>our state variable could be like...<br />
+<div style=
+"color: rgb(212, 212, 212); background-color: rgb(30, 30, 30); font-family: 'Droid Sans Mono', monospace, monospace, 'Droid Sans Fallback'; font-size: 14px; line-height: 19px; white-space: pre;">
+<div><span style="color: #569cd6;">let</span> [<span style=
+"color: #9cdcfe;">posts</span>, <span style=
+"color: #dcdcaa;">setPosts</span>] = <span style=
+"color: #dcdcaa;">useState</span>([</div>
+<div>{</div>
+<div><span style="color: #9cdcfe;">name</span><span style=
+"color: #9cdcfe;">:</span> <span style="color: #ce9178;">'Super
+awesome post'</span>,</div>
+<div><span style="color: #9cdcfe;">body</span><span style=
+"color: #9cdcfe;">:</span> <span style="color: #ce9178;">'The
+content of the post'</span></div>
+<div>},</div>
+<div>{</div>
+<div><span style="color: #9cdcfe;">name</span><span style=
+"color: #9cdcfe;">:</span> <span style="color: #ce9178;">'JS is
+great'</span>,</div>
+<div><span style="color: #9cdcfe;">body</span><span style=
+"color: #9cdcfe;">:</span> <span style="color: #ce9178;">'soMETHING
+ELSE'</span></div>
+<div>},</div>
+<div>])</div>
+</div>
+</li>
+<li>to list the items we can use the ES6 map method of
+arrays:<br />
+<div style=
+"color: rgb(212, 212, 212); background-color: rgb(30, 30, 30); font-family: 'Droid Sans Mono', monospace, monospace, 'Droid Sans Fallback'; font-size: 14px; line-height: 19px; white-space: pre;">
+<div><span style="color: #569cd6;">{</span><span style=
+"color: #9cdcfe;">posts</span>.<span style=
+"color: #dcdcaa;">map</span>((<span style=
+"color: #9cdcfe;">item</span>, <span style=
+"color: #9cdcfe;">i</span>) <span style=
+"color: #569cd6;">=&gt;</span> (</div>
+<div><span style="color: #808080;">&lt;</span><span style=
+"color: #569cd6;">div</span> <span style=
+"color: #9cdcfe;">key</span>=<span style=
+"color: #569cd6;">{</span><span style=
+"color: #9cdcfe;">i</span><span style=
+"color: #569cd6;">}</span><span style=
+"color: #808080;">&gt;</span></div>
+<div><span style="color: #808080;">&lt;</span><span style=
+"color: #569cd6;">div</span><span style=
+"color: #808080;">&gt;</span>Name: <span style=
+"color: #569cd6;">{</span><span style=
+"color: #9cdcfe;">item</span>.<span style=
+"color: #9cdcfe;">name</span><span style="color: #569cd6;">}</span>
+<span style="color: #808080;">&lt;/</span><span style=
+"color: #569cd6;">div</span><span style=
+"color: #808080;">&gt;</span></div>
+<div><span style="color: #808080;">&lt;</span><span style=
+"color: #569cd6;">div</span><span style=
+"color: #808080;">&gt;</span>Body: <span style=
+"color: #569cd6;">{</span><span style=
+"color: #9cdcfe;">item</span>.<span style=
+"color: #9cdcfe;">body</span><span style="color: #569cd6;">}</span>
+<span style="color: #808080;">&lt;/</span><span style=
+"color: #569cd6;">div</span><span style=
+"color: #808080;">&gt;</span></div>
+<div><span style="color: #808080;">&lt;</span><span style=
+"color: #569cd6;">hr</span> <span style=
+"color: #808080;">/&gt;</span></div>
+<div><span style="color: #808080;">&lt;/</span><span style=
+"color: #569cd6;">div</span><span style=
+"color: #808080;">&gt;</span></div>
+<div>))<span style="color: #569cd6;">}</span></div>
+</div>
+</li>
+<li>we then can have an button like that:<br />
+<div style=
+"color: rgb(212, 212, 212); background-color: rgb(30, 30, 30); font-family: 'Droid Sans Mono', monospace, monospace, 'Droid Sans Fallback'; font-size: 14px; line-height: 19px; white-space: pre;">
+<div><span style="color: #808080;">&lt;</span><span style=
+"color: #569cd6;">button</span></div>
+<div><span style="color: #9cdcfe;">onClick</span>=<span style=
+"color: #569cd6;">{</span><span style=
+"color: #dcdcaa;">addOnePost</span><span style=
+"color: #569cd6;">}</span></div>
+<div><span style="color: #808080;">&gt;</span></div>
+<div>Add on more</div>
+<div><span style="color: #808080;">&lt;/</span><span style=
+"color: #569cd6;">button</span><span style=
+"color: #808080;">&gt;</span></div>
+</div>
+</li>
+<li>with following event:<br />
+<div style=
+"color: rgb(212, 212, 212); background-color: rgb(30, 30, 30); font-family: 'Droid Sans Mono', monospace, monospace, 'Droid Sans Fallback'; font-size: 14px; line-height: 19px; white-space: pre;">
+<div><span style="color: #569cd6;">const</span> <span style=
+"color: #dcdcaa;">addOnePost</span> = () <span style=
+"color: #569cd6;">=&gt;</span> {</div>
+<div><span style="color: #569cd6;">let</span> <span style=
+"color: #9cdcfe;">newPost</span> = {</div>
+<div><span style="color: #9cdcfe;">name</span><span style=
+"color: #9cdcfe;">:</span> <span style="color: #ce9178;">'PHP is
+still decent'</span>,</div>
+<div><span style="color: #9cdcfe;">body</span><span style=
+"color: #9cdcfe;">:</span> <span style="color: #ce9178;">'something
+about php'</span></div>
+<div>}</div>
+<br />
+<div><span style="color: #dcdcaa;">setPosts</span>([</div>
+<div>...<span style="color: #9cdcfe;">posts</span>,</div>
+<div><span style="color: #9cdcfe;">newPost</span></div>
+<div>]);</div>
+<br />
+<div>}</div>
+</div>
+</li>
+<li><span style="background-color: rgb(255, 255, 0);">like this we
+keep the previous posts and add the new one</span></li>
+<ul>
+<li>it is pretty simple</li>
+</ul>
+<li><span style="background-color: rgb(255, 255, 0);">better don't
+use a class based component just because you need a state with
+several properties</span></li>
+</ul>
 </ul>
 </div>
-<div><br /></div>
 </div>
 <div><span style=
 "background-color: rgb(255, 255, 0);">UseEffect</span></div>
+<div>
+<ul>
+<li>on the doc it says: "Accepts a function that contains
+imperative, possibly effectful code"</li>
+<ul>
+<li>-&gt; sometimes the documentation of React does not make much
+sense</li>
+</ul>
+<li><span style="background-color: rgb(255, 255, 0);">useEffect is
+like a lifecycle</span></li>
+<li>we can cover many scenarios with the same hook</li>
+</ul>
+</div>
 <div><br /></div>
 <div><span style=
 "background-color: rgb(255, 255, 0);">UseCallback</span></div>
@@ -1676,9 +1894,9 @@ well</li>
 </div>
 </div>
 </en-note>]]></Content>
-        <ContentLength>61095</ContentLength>
+        <ContentLength>70374</ContentLength>
         <Created>1638387889846</Created>
-        <Updated>1638909333587</Updated>
+        <Updated>1638917092717</Updated>
         <Active>true</Active>
         <UpdateSequenceNumber>0</UpdateSequenceNumber>
         <NotebookGuid>d0d14f74-6b64-483b-8f9d-b6474c5eb883</NotebookGuid>
